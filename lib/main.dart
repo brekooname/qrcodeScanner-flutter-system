@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:vibration/vibration.dart';
 import 'package:scan/scan.dart';
 
-var apiURL = "https://explore-reg.herokuapp.com/test";
+var apiURL = "https://api.obmeg.com/search";
 ThemeData dark = ThemeData(
     // colorScheme: ColorScheme.dark(),
     scaffoldBackgroundColor: Color(0xFF102334),
@@ -43,7 +43,7 @@ class _MyHomeState extends State<MyHome> {
           appBar: AppBar(
             toolbarHeight: 70,
             title: Text(
-              'ExploreX ticket checker',
+              'BYF ticket Scanner',
               style:
                   TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
@@ -352,17 +352,19 @@ class _QRViewExampleState extends State<QRViewExample> {
       isLoading = true;
     });
     try {
-      String body = code!.contains("code")
-          ? code.replaceAll("code", "code")
-          : '{"code": "$code","gate":"${widget.gate == 0 ? "Main" : "Falaky"}"}';
+      String body =
+          '{"code": "$code","gate":"${widget.gate == 0 ? "Main" : "Falaky"}"}';
       print("Body: " + body);
       var response = await http.post(
         Uri.parse(apiURL),
         body: body,
-        headers: {"Accept": "*", "Content-Type": "application/json"},
+        headers: {"Content-Type": "application/json"},
       );
+      //final responseData = await (jsonDecode(response.body));
+      print("body: " + response.body);
       final responseData = await (jsonDecode(response.body));
       final result = responseData['message'];
+      print(responseData);
 
       setState(() {
         isLoading = false;
